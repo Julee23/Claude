@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CCNP 6-Week Study Plan</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f5f5f3;
+    --bg-tertiary: #ebebea;
+    --text-primary: #1a1a18;
+    --text-secondary: #5f5e5a;
+    --text-tertiary: #888780;
+    --border: rgba(0,0,0,0.12);
+    --border-strong: rgba(0,0,0,0.22);
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --font: 'DM Sans', system-ui, sans-serif;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg-primary: #1e1e1c;
+      --bg-secondary: #2a2a28;
+      --bg-tertiary: #333330;
+      --text-primary: #f0ede8;
+      --text-secondary: #b4b2a9;
+      --text-tertiary: #888780;
+      --border: rgba(255,255,255,0.1);
+      --border-strong: rgba(255,255,255,0.2);
+    }
+    .tag-lab { background: #085041 !important; color: #9FE1CB !important; }
+    .tag-video { background: #0C447C !important; color: #B5D4F4 !important; }
+    .tag-read { background: #633806 !important; color: #FAC775 !important; }
+    .tag-test { background: #791F1F !important; color: #F7C1C1 !important; }
+  }
+
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+  body {
+    font-family: var(--font);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding: 2rem 1rem;
+  }
+
+  .container {
+    max-width: 780px;
+    margin: 0 auto;
+  }
+
+  header {
+    margin-bottom: 2rem;
+  }
+
+  header h1 {
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.5px;
+  }
+
+  header p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+  }
+
+  .badge-encor {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 4px;
+    background: #E1F5EE;
+    color: #0F6E56;
+    margin-right: 6px;
+    margin-top: 8px;
+  }
+
+  .badge-enarsi {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 10px;
+    border-radius: 4px;
+    background: #E6F1FB;
+    color: #185FA5;
+    margin-top: 8px;
+  }
+
+  .summary-bar {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    margin-bottom: 1.5rem;
+  }
+
+  .stat {
+    background: var(--bg-primary);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
+  }
+
+  .stat .num {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text-primary);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .stat .lbl {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+  }
+
+  .week-card {
+    background: var(--bg-primary);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.25rem;
+    margin-bottom: 12px;
+    transition: border-color 0.2s;
+  }
+
+  .week-card:hover {
+    border-color: var(--border-strong);
+  }
+
+  .week-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .week-badge {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 600;
+    flex-shrink: 0;
+    font-family: 'DM Mono', monospace;
+  }
+
+  .week-title { flex: 1; }
+  .week-title h3 { font-size: 15px; font-weight: 500; color: var(--text-primary); }
+  .week-title p { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+
+  .progress-bar {
+    height: 3px;
+    background: var(--bg-tertiary);
+    border-radius: 2px;
+    margin-top: 7px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+
+  .week-meta {
+    font-size: 12px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .chevron {
+    display: inline-block;
+    transition: transform 0.2s;
+    font-size: 14px;
+    color: var(--text-tertiary);
+  }
+
+  .chevron.open { transform: rotate(90deg); }
+
+  .days-grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 6px;
+    margin-top: 12px;
+  }
+
+  .day-cell {
+    background: var(--bg-secondary);
+    border-radius: 6px;
+    padding: 7px 5px;
+    text-align: center;
+  }
+
+  .day-cell .day-label {
+    font-size: 10px;
+    color: var(--text-tertiary);
+    display: block;
+    margin-bottom: 4px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .day-cell .day-task {
+    font-size: 10px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+  }
+
+  .day-cell.rest { opacity: 0.45; }
+
+  .tasks-section { margin-top: 12px; }
+
+  .checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 0;
+    border-bottom: 0.5px solid var(--border);
+    cursor: pointer;
+  }
+
+  .checkbox-row:last-child { border-bottom: none; }
+
+  .checkbox-row input[type=checkbox] {
+    accent-color: #1D9E75;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  .checkbox-row label {
+    font-size: 13px;
+    color: var(--text-primary);
+    cursor: pointer;
+    flex: 1;
+    line-height: 1.4;
+  }
+
+  .checkbox-row label.done {
+    text-decoration: line-through;
+    color: var(--text-tertiary);
+  }
+
+  .tag {
+    display: inline-block;
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 4px;
+    margin-left: 6px;
+    font-weight: 500;
+    vertical-align: middle;
+  }
+
+  .tag-lab { background: #E1F5EE; color: #0F6E56; }
+  .tag-video { background: #E6F1FB; color: #185FA5; }
+  .tag-read { background: #FAEEDA; color: #854F0B; }
+  .tag-test { background: #FCEBEB; color: #A32D2D; }
+
+  .legend {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+
+  footer {
+    margin-top: 2rem;
+    font-size: 12px;
+    color: var(--text-tertiary);
+    text-align: center;
+  }
+
+  @media (max-width: 500px) {
+    .summary-bar { grid-template-columns: repeat(2, 1fr); }
+    .days-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>CCNP 6-Week Study Plan</h1>
+    <p>Intensive prep for ENCOR 350-401 (v1.2) + Concentration exam &mdash; ~3 hrs/day</p>
+    <div>
+      <span class="badge-encor">ENCOR 350-401 v1.2</span>
+      <span class="badge-enarsi">ENARSI 300-410</span>
+    </div>
+  </header>
+
+  <div class="summary-bar">
+    <div class="stat"><div class="num" id="total-done">0</div><div class="lbl">Tasks done</div></div>
+    <div class="stat"><div class="num" id="total-pct">0%</div><div class="lbl">Overall progress</div></div>
+    <div class="stat"><div class="num">6</div><div class="lbl">Weeks total</div></div>
+    <div class="stat"><div class="num">~3 hrs</div><div class="lbl">Per day avg</div></div>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><span class="tag tag-read">read</span> Official cert guide</div>
+    <div class="legend-item"><span class="tag tag-video">video</span> Video course</div>
+    <div class="legend-item"><span class="tag tag-lab">lab</span> Hands-on lab</div>
+    <div class="legend-item"><span class="tag tag-test">test</span> Practice exam</div>
+  </div>
+
+  <div id="weeks-container"></div>
+
+  <footer>CCNP ENCOR v1.2 active from March 19, 2026 &bull; Wireless topics removed &bull; Automation domain = 15% of exam</footer>
+</div>
+
+<script>
+const STORAGE_KEY = 'ccnp_plan_state_v1';
+
+const weeks = [
+  {
+    label: "Week 1", title: "ENCOR foundations", subtitle: "Architecture, VRF, dual-stack",
+    color: "#1D9E75", lightBg: "#E1F5EE", darkBg: "#085041",
+    days: ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+    dayTasks: ["Network arch & design","Spanning Tree deep dive","EIGRP/OSPF review","BGP basics","BGP advanced","Full lab day","REST + review"],
+    tasks: [
+      { text: "Read ENCOR OCG: Ch 1–3 (Architecture & Design)", type: "read" },
+      { text: "CBT Nuggets / INE: Enterprise network design videos", type: "video" },
+      { text: "Lab: Build 3-tier campus topology in GNS3/CML", type: "lab" },
+      { text: "Lab: Configure VRF-Lite with route leaking", type: "lab" },
+      { text: "Lab: OSPF multi-area + route redistribution", type: "lab" },
+    ]
+  },
+  {
+    label: "Week 2", title: "Routing & switching", subtitle: "BGP, QoS, advanced L2",
+    color: "#378ADD", lightBg: "#E6F1FB", darkBg: "#0C447C",
+    days: ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+    dayTasks: ["BGP attributes","BGP policy lab","MPLS basics","QoS fundamentals","QoS lab","Lab marathon","Practice quiz"],
+    tasks: [
+      { text: "Read ENCOR OCG: Ch 4–7 (BGP, MPLS, QoS)", type: "read" },
+      { text: "Video: BGP path selection & attributes", type: "video" },
+      { text: "Lab: iBGP/eBGP full mesh + route reflectors", type: "lab" },
+      { text: "Lab: QoS marking, policing, shaping", type: "lab" },
+      { text: "Boson/Pearson: 50-question practice quiz — routing", type: "test" },
+    ]
+  },
+  {
+    label: "Week 3", title: "Infrastructure & security", subtitle: "Multicast, NAT, ACLs, ZBFW",
+    color: "#BA7517", lightBg: "#FAEEDA", darkBg: "#633806",
+    days: ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+    dayTasks: ["Multicast theory","PIM/IGMP lab","NAT/PAT lab","ACL deep dive","ZBFW lab","Lab catch-up","Weak area review"],
+    tasks: [
+      { text: "Read ENCOR OCG: Ch 8–11 (Infrastructure & Security)", type: "read" },
+      { text: "Video: Multicast, PIM sparse/dense mode", type: "video" },
+      { text: "Lab: PIM-SM with RP, IGMP snooping", type: "lab" },
+      { text: "Lab: Zone-based firewall policy config", type: "lab" },
+      { text: "Boson/Pearson: 50-question practice quiz — security", type: "test" },
+    ]
+  },
+  {
+    label: "Week 4", title: "Automation & assurance", subtitle: "Python, APIs, DNA Center — 15% of exam",
+    color: "#7F77DD", lightBg: "#EEEDFE", darkBg: "#3C3489",
+    days: ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+    dayTasks: ["Python crash course","Netmiko scripting","RESTCONF/NETCONF","Ansible playbooks","DNA Center lab","DevNet sandbox","Full practice test"],
+    tasks: [
+      { text: "Read ENCOR OCG: Ch 15–18 (Automation domain)", type: "read" },
+      { text: "Video: Python for network engineers (Netmiko, requests)", type: "video" },
+      { text: "Lab: Script pulling device configs via REST API", type: "lab" },
+      { text: "Lab: Ansible playbook — configure OSPF across 3 routers", type: "lab" },
+      { text: "Cisco DevNet sandbox: DNA Center intent API hands-on", type: "lab" },
+      { text: "Full 90-question timed practice exam (target 70%+)", type: "test" },
+    ]
+  },
+  {
+    label: "Week 5", title: "Concentration exam prep", subtitle: "ENARSI 300-410 (or your chosen track)",
+    color: "#D4537E", lightBg: "#FBEAF0", darkBg: "#72243E",
+    days: ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+    dayTasks: ["ENARSI intro","Advanced OSPF","Advanced BGP","EIGRP named mode","Redistribution lab","VRF-Lite + MPLS","Full mock exam"],
+    tasks: [
+      { text: "Read ENARSI OCG: Ch 1–5 (Advanced routing protocols)", type: "read" },
+      { text: "Video: EIGRP named mode, stub routing", type: "video" },
+      { text: "Lab: Complex route redistribution with filters", type: "lab" },
+      { text: "Lab: DMVPN Phase 1/2/3 with NHRP", type: "lab" },
+      { text: "Lab: BGP communities + advanced filtering", type: "lab" },
+      { text: "Full timed ENARSI practice exam (target 70%+)", type: "test" },
+    ]
+  },
+  {
+    label: "Week 6", title: "Final review & exam", subtitle: "Weak spots, sim drills, go time",
+    color: "#888780", lightBg: "#F1EFE8", darkBg: "#444441",
+    days: ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+    dayTasks: ["Weak area blitz","Lab simulation drill","Automation re-cap","Mock exam 2","Light review","ENCOR exam","ENARSI exam"],
+    tasks: [
+      { text: "Revisit all flagged weak areas from practice tests", type: "read" },
+      { text: "Lab sim drill: timed config tasks under 20 min each", type: "lab" },
+      { text: "Final full ENCOR mock exam (target 80%+)", type: "test" },
+      { text: "Final full ENARSI mock exam (target 80%+)", type: "test" },
+      { text: "Rest day before exam — light flashcard review only", type: "read" },
+    ]
+  }
+];
+
+// State
+let state = {};
+
+function loadState() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) state = JSON.parse(saved);
+  } catch(e) {}
+  weeks.forEach((w, wi) => {
+    if (!state[wi]) state[wi] = { open: wi === 0, tasks: w.tasks.map(() => false) };
+  });
+}
+
+function saveState() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
+}
+
+function totalDone() {
+  let done = 0, total = 0;
+  weeks.forEach((w, wi) => {
+    w.tasks.forEach((_, ti) => { total++; if (state[wi].tasks[ti]) done++; });
+  });
+  return { done, total };
+}
+
+function render() {
+  const { done, total } = totalDone();
+  document.getElementById('total-done').textContent = done;
+  document.getElementById('total-pct').textContent = Math.round(done / total * 100) + '%';
+
+  const container = document.getElementById('weeks-container');
+  container.innerHTML = '';
+
+  const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+  weeks.forEach((w, wi) => {
+    const wDone = state[wi].tasks.filter(Boolean).length;
+    const wTotal = w.tasks.length;
+    const pct = wTotal ? Math.round(wDone / wTotal * 100) : 0;
+    const isOpen = state[wi].open;
+    const badgeBg = isDark ? w.darkBg : w.lightBg;
+
+    const card = document.createElement('div');
+    card.className = 'week-card';
+
+    let daysHtml = w.days.map((d, di) => `
+      <div class="day-cell ${di === 6 ? 'rest' : ''}">
+        <span class="day-label">${d}</span>
+        <span class="day-task">${w.dayTasks[di] || ''}</span>
+      </div>`).join('');
+
+    let tasksHtml = w.tasks.map((t, ti) => `
+      <div class="checkbox-row" onclick="toggleTask(${wi},${ti})">
+        <input type="checkbox" ${state[wi].tasks[ti] ? 'checked' : ''} onclick="event.stopPropagation();toggleTask(${wi},${ti})">
+        <label class="${state[wi].tasks[ti] ? 'done' : ''}">${t.text} <span class="tag tag-${t.type}">${t.type}</span></label>
+      </div>`).join('');
+
+    card.innerHTML = `
+      <div class="week-header" onclick="toggleWeek(${wi})">
+        <div class="week-badge" style="background:${badgeBg};color:${w.color}">${wi + 1}</div>
+        <div class="week-title">
+          <h3>${w.label}: ${w.title}</h3>
+          <p>${w.subtitle}</p>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width:${pct}%;background:${w.color}"></div>
+          </div>
+        </div>
+        <div class="week-meta">
+          ${wDone}/${wTotal}
+          <span class="chevron ${isOpen ? 'open' : ''}">›</span>
+        </div>
+      </div>
+      ${isOpen ? `<div class="days-grid">${daysHtml}</div><div class="tasks-section">${tasksHtml}</div>` : ''}
+    `;
+    container.appendChild(card);
+  });
+}
+
+window.toggleWeek = function(wi) {
+  state[wi].open = !state[wi].open;
+  saveState();
+  render();
+};
+
+window.toggleTask = function(wi, ti) {
+  state[wi].tasks[ti] = !state[wi].tasks[ti];
+  saveState();
+  render();
+};
+
+loadState();
+render();
+</script>
+</body>
+</html>
