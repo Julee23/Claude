@@ -1,0 +1,257 @@
+🏗️ The Master CCNP Topology (5 Active Nodes at a Time) 
+
+The full logical design looks like this — you rotate which 5 nodes are powered on per study phase: 
+
+ 
+
+ 
+ 
+
+📦 Node Roster (Full Design — 8 Nodes Rotated in Groups of 5) 
+
+Node 
+
+Type 
+
+Role 
+
+R1 
+
+IOSv (Router) 
+
+Edge / NAT / PAT / BGP / IP SLA / Tunneling 
+
+R2 
+
+IOSv (Router) 
+
+Core / OSPF / BGP / QoS / Multicast RP 
+
+R3 
+
+IOSv (Router) 
+
+Core / OSPF / BGP / GLBP / Multicast 
+
+SW1 
+
+IOSvL2 (Switch) 
+
+L3 Distribution / STP Root / VLAN / EtherChannel 
+
+SW2 
+
+IOSvL2 (Switch) 
+
+Access Layer / SPAN / STP / ACLs / VLANs 
+
+SW3 
+
+IOSvL2 (Switch) 
+
+Access Layer / EtherChannel / VLAN 
+
+PC1 
+
+Alpine Linux 
+
+End host / API testing / Automation scripts 
+
+PC2 
+
+Alpine Linux 
+
+End host / traffic generation 
+
+Unmanaged Switches (free, don't count) connect your nodes without using node slots. 
+
+ 
+ 
+
+🔄 Study Phases — Which 5 Nodes to Power On 
+
+Phase 1 — L2 Switching Foundation 
+
+Nodes ON: SW1, SW2, SW3, PC1, PC2 
+
+VLANs: Create VLANs 10, 20, 30 — assign access ports 
+
+STP: Force SW1 as root bridge, observe port states, test RSTP convergence 
+
+EtherChannel: Bundle SW1↔SW2 with LACP (mode active), verify with show etherchannel summary 
+
+SPAN: Mirror SW2 traffic to PC1 for analysis (Switch Port Analyser) 
+
+ACLs: Apply port-based ACLs on SW2 to restrict VLAN traffic 
+
+ 
+ 
+
+Phase 2 — L3 Routing & OSPF Advanced 
+
+Nodes ON: R1, R2, R3, SW1, PC1 
+
+OSPF Multi-Area: R1=Area 0 (backbone), R2=Area 1, R3=Area 2 
+
+OSPF Advanced: LSA types, route filtering with distribute-list, stub/NSSA areas 
+
+Inter-VLAN routing: SW1 as L3 switch with SVIs, route to R2 
+
+IP SLA: Configure ICMP echo tracking on R1 to monitor R2 reachability 
+
+Static route tracking: Failover based on IP SLA results 
+
+ 
+ 
+
+Phase 3 — BGP 
+
+Nodes ON: R1, R2, R3, PC1, PC2 
+
+eBGP: R1 simulates ISP, R2 and R3 are your AS 
+
+iBGP: Full mesh between R2 and R3 
+
+BGP attributes: Manipulate AS-PATH, LOCAL-PREF, MED, weight 
+
+BGP filtering: Use prefix-lists and route-maps 
+
+BGP communities: Tag and filter routes between peers 
+
+ 
+ 
+
+Phase 4 — NAT, PAT, GLBP & IP Services 
+
+Nodes ON: R1, R2, R3, PC1, PC2 
+
+NAT/PAT: R1 translates inside (192.168.x.x) to simulated public IPs 
+
+Static NAT: Map a specific inside host to a fixed public IP 
+
+GLBP: R2 and R3 share a virtual gateway IP — test AVG/AVF roles, load balancing, and failover 
+
+HSRP/VRRP comparison: Try all three FHRP protocols for comparison 
+
+NTP: Set R1 as NTP master, sync R2/R3 
+
+ 
+ 
+
+Phase 5 — Tunneling & Multicast 
+
+Nodes ON: R1, R2, R3, PC1, PC2 
+
+GRE Tunnel: Create a tunnel interface between R1 and R3 over R2's network 
+
+IPsec over GRE: Add crypto map to the GRE tunnel 
+
+DMVPN Phase 1: R1 as hub, R2/R3 as spokes 
+
+Multicast: Enable PIM Sparse Mode, R2 as RP, verify with show ip mroute 
+
+IGMP: PC1 joins a multicast group, verify membership 
+
+ 
+ 
+
+Phase 6 — QoS & NetFlow 
+
+Nodes ON: R1, R2, R3, PC1, PC2 
+
+MQC (Modular QoS CLI): Define class-maps (DSCP, ACL-based), policy-maps, service-policies 
+
+Traffic shaping vs policing: Apply on R1 WAN interface 
+
+DSCP marking: Mark traffic at ingress on R2 
+
+LLQ: Configure low-latency queue for voice-like traffic 
+
+NetFlow (ETFlow): Enable ip flow ingress on R1/R2 interfaces, export to PC1 acting as collector 
+
+ 
+ 
+
+Phase 7 — Automation & APIs 
+
+Nodes ON: R1, R2, SW1, PC1, PC2 
+
+RESTCONF/NETCONF: Enable on R1/R2 (restconf config), query from PC1 using curl or Python requests 
+
+Python scripts on PC1: Automate VLAN creation via RESTCONF, pull interface stats via API 
+
+Ansible (on PC1): Write a playbook to push config to R1 and SW1 
+
+YANG models: Explore with show yang on IOS-XE nodes 
+
+EEM (Embedded Event Manager): Script R1 to auto-log events or send syslog on interface down 
+
+ 
+ 
+
+🔌 Addressing Plan 
+
+Network 
+
+Subnet 
+
+Used for 
+
+10.0.12.0/30 
+
+R1↔R2 
+
+Core link 
+
+10.0.13.0/30 
+
+R1↔R3 
+
+Core link 
+
+10.0.23.0/30 
+
+R2↔R3 
+
+Core link 
+
+192.168.10.0/24 
+
+VLAN 10 
+
+PC1 subnet 
+
+192.168.20.0/24 
+
+VLAN 20 
+
+PC2 subnet 
+
+172.16.0.0/24 
+
+Loopbacks 
+
+BGP / OSPF router IDs 
+
+100.64.0.0/30 
+
+R1 WAN 
+
+Simulated ISP/internet 
+
+ 
+ 
+
+💡 Pro Tips for CML-Free 
+
+Save snapshots after each phase config — CML lets you save/restore node states 
+
+Use Unmanaged Switches (unlimited, free) as a central hub to connect all nodes physically without wasting node slots 
+
+Alpine Linux hosts are very lightweight (use those over Ubuntu to save RAM) 
+
+Label your nodes clearly in the canvas — CML supports annotations 
+
+Export your lab as a YAML file after each phase to back up your work 
+
+ 
