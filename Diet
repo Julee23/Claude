@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>7-Day Deficit Diet Plan</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Literata:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f0e8;
+    --surface: #ede8dc;
+    --card: #ffffff;
+    --border: #d8d0c0;
+    --ink: #1a1612;
+    --muted: #7a7060;
+    --accent: #c84b2f;
+    --green: #2d6a4f;
+    --gold: #c9882a;
+    --blue: #2c5f8a;
+    --tag-bg: #f0ebe0;
+  }
+
+- { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+background: var(–bg);
+color: var(–ink);
+font-family: ‘Literata’, Georgia, serif;
+min-height: 100vh;
+}
+
+/* Grain texture overlay */
+body::after {
+content: ‘’;
+position: fixed;
+inset: 0;
+background-image: url(“data:image/svg+xml,%3Csvg viewBox=‘0 0 256 256’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cfilter id=‘noise’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.9’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3C/filter%3E%3Crect width=‘100%25’ height=‘100%25’ filter=‘url(%23noise)’ opacity=‘0.04’/%3E%3C/svg%3E”);
+pointer-events: none;
+z-index: 999;
+opacity: 0.4;
+}
+
+.page {
+max-width: 860px;
+margin: 0 auto;
+padding: 48px 24px 100px;
+}
+
+/* Header */
+.masthead {
+border-top: 3px solid var(–ink);
+border-bottom: 1px solid var(–ink);
+padding: 24px 0 20px;
+margin-bottom: 40px;
+display: grid;
+grid-template-columns: 1fr auto;
+gap: 20px;
+align-items: end;
+animation: fadeIn 0.7s ease both;
+}
+
+.masthead-label {
+font-family: ‘Syne’, sans-serif;
+font-size: 10px;
+letter-spacing: 4px;
+text-transform: uppercase;
+color: var(–accent);
+margin-bottom: 8px;
+}
+
+.masthead h1 {
+font-family: ‘Syne’, sans-serif;
+font-size: clamp(36px, 8vw, 72px);
+font-weight: 800;
+line-height: 0.95;
+letter-spacing: -1px;
+color: var(–ink);
+}
+
+.masthead-meta {
+text-align: right;
+font-size: 12px;
+color: var(–muted);
+font-style: italic;
+line-height: 1.8;
+}
+
+/* Stats strip */
+.stats-strip {
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+border: 1px solid var(–border);
+border-radius: 4px;
+overflow: hidden;
+margin-bottom: 40px;
+animation: fadeIn 0.7s 0.1s ease both;
+}
+
+.stat-cell {
+padding: 16px;
+text-align: center;
+border-right: 1px solid var(–border);
+background: var(–card);
+}
+
+.stat-cell:last-child { border-right: none; }
+
+.stat-n {
+font-family: ‘Syne’, sans-serif;
+font-size: 28px;
+font-weight: 800;
+line-height: 1;
+}
+
+.stat-l {
+font-size: 10px;
+color: var(–muted);
+text-transform: uppercase;
+letter-spacing: 2px;
+margin-top: 4px;
+}
+
+.stat-cell:nth-child(1) .stat-n { color: var(–accent); }
+.stat-cell:nth-child(2) .stat-n { color: var(–green); }
+.stat-cell:nth-child(3) .stat-n { color: var(–gold); }
+.stat-cell:nth-child(4) .stat-n { color: var(–blue); }
+
+/* Why not losing weight box */
+.warning-box {
+background: var(–ink);
+color: var(–bg);
+border-radius: 6px;
+padding: 20px 24px;
+margin-bottom: 40px;
+animation: fadeIn 0.7s 0.15s ease both;
+}
+
+.warning-box h3 {
+font-family: ‘Syne’, sans-serif;
+font-size: 14px;
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(–gold);
+margin-bottom: 10px;
+}
+
+.warning-box p {
+font-size: 13px;
+line-height: 1.7;
+color: #d8d0c0;
+}
+
+.warning-box strong { color: #fff; }
+
+/* Day navigation */
+.day-nav {
+display: grid;
+grid-template-columns: repeat(7, 1fr);
+gap: 6px;
+margin-bottom: 28px;
+animation: fadeIn 0.7s 0.2s ease both;
+}
+
+.day-btn {
+padding: 10px 4px;
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: 4px;
+cursor: pointer;
+text-align: center;
+transition: all 0.15s;
+font-family: ‘Syne’, sans-serif;
+}
+
+.day-btn .day-short {
+font-size: 9px;
+letter-spacing: 2px;
+text-transform: uppercase;
+color: var(–muted);
+display: block;
+}
+
+.day-btn .day-num {
+font-size: 18px;
+font-weight: 800;
+color: var(–ink);
+display: block;
+line-height: 1.2;
+}
+
+.day-btn.active, .day-btn:hover {
+background: var(–ink);
+border-color: var(–ink);
+}
+
+.day-btn.active .day-short,
+.day-btn.active .day-num,
+.day-btn:hover .day-short,
+.day-btn:hover .day-num {
+color: var(–bg);
+}
+
+/* Day panel */
+.day-panel { display: none; animation: slideIn 0.3s ease both; }
+.day-panel.active { display: block; }
+
+@keyframes slideIn {
+from { opacity: 0; transform: translateY(10px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+/* Day header */
+.day-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 20px;
+padding-bottom: 16px;
+border-bottom: 2px solid var(–ink);
+}
+
+.day-title {
+font-family: ‘Syne’, sans-serif;
+font-size: 28px;
+font-weight: 800;
+}
+
+.day-macros {
+display: flex;
+gap: 16px;
+font-family: ‘Syne’, sans-serif;
+font-size: 12px;
+}
+
+.macro { text-align: center; }
+.macro-val { font-size: 20px; font-weight: 700; display: block; line-height: 1; }
+.macro-lbl { font-size: 9px; letter-spacing: 1px; text-transform: uppercase; color: var(–muted); }
+
+/* Meal card */
+.meal {
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: 6px;
+margin-bottom: 14px;
+overflow: hidden;
+}
+
+.meal-top {
+display: grid;
+grid-template-columns: 4px 1fr;
+}
+
+.meal-stripe { background: var(–accent); }
+.meal-stripe.lunch { background: var(–gold); }
+.meal-stripe.dinner { background: var(–green); }
+.meal-stripe.breakfast { background: var(–blue); }
+
+.meal-body { padding: 18px 20px; }
+
+.meal-row1 {
+display: flex;
+justify-content: space-between;
+align-items: flex-start;
+margin-bottom: 12px;
+flex-wrap: wrap;
+gap: 8px;
+}
+
+.meal-time {
+font-family: ‘Syne’, sans-serif;
+font-size: 9px;
+letter-spacing: 3px;
+text-transform: uppercase;
+color: var(–muted);
+margin-bottom: 3px;
+}
+
+.meal-name {
+font-family: ‘Syne’, sans-serif;
+font-size: 17px;
+font-weight: 700;
+color: var(–ink);
+}
+
+.meal-pills {
+display: flex;
+gap: 6px;
+flex-wrap: wrap;
+}
+
+.pill {
+font-family: ‘Syne’, sans-serif;
+font-size: 11px;
+font-weight: 600;
+padding: 3px 10px;
+border-radius: 100px;
+white-space: nowrap;
+}
+
+.pill-p { background: rgba(45,106,79,0.12); color: var(–green); border: 1px solid rgba(45,106,79,0.2); }
+.pill-c { background: rgba(201,136,42,0.12); color: var(–gold); border: 1px solid rgba(201,136,42,0.2); }
+.pill-k { background: rgba(200,75,47,0.12); color: var(–accent); border: 1px solid rgba(200,75,47,0.2); }
+.pill-q { background: rgba(44,95,138,0.1); color: var(–blue); border: 1px solid rgba(44,95,138,0.2); }
+
+.ingredients-grid {
+display: flex;
+flex-wrap: wrap;
+gap: 6px;
+margin-bottom: 12px;
+}
+
+.ingr {
+background: var(–tag-bg);
+border: 1px solid var(–border);
+border-radius: 4px;
+padding: 5px 10px;
+font-size: 12.5px;
+}
+
+.ingr em {
+font-style: normal;
+color: var(–muted);
+font-size: 11px;
+margin-left: 3px;
+}
+
+.tip {
+font-size: 12px;
+color: var(–muted);
+font-style: italic;
+border-left: 2px solid var(–border);
+padding-left: 10px;
+line-height: 1.6;
+}
+
+/* Quick tag */
+.quick-tag {
+display: inline-block;
+font-family: ‘Syne’, sans-serif;
+font-size: 9px;
+letter-spacing: 1px;
+text-transform: uppercase;
+padding: 2px 7px;
+border-radius: 3px;
+margin-left: 8px;
+vertical-align: middle;
+background: rgba(44,95,138,0.1);
+color: var(–blue);
+border: 1px solid rgba(44,95,138,0.2);
+}
+
+/* Daily note */
+.daily-note {
+background: var(–surface);
+border: 1px solid var(–border);
+border-radius: 6px;
+padding: 14px 18px;
+font-size: 13px;
+color: var(–muted);
+font-style: italic;
+margin-top: 8px;
+line-height: 1.7;
+}
+
+/* Rules section */
+.rules-section {
+margin-top: 50px;
+border-top: 3px double var(–ink);
+padding-top: 32px;
+animation: fadeIn 0.7s 0.3s ease both;
+}
+
+.rules-title {
+font-family: ‘Syne’, sans-serif;
+font-size: 22px;
+font-weight: 800;
+margin-bottom: 20px;
+letter-spacing: -0.5px;
+}
+
+.rules-grid {
+display: grid;
+grid-template-columns: repeat(2, 1fr);
+gap: 14px;
+}
+
+.rule-card {
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: 6px;
+padding: 16px;
+}
+
+.rule-icon { font-size: 22px; margin-bottom: 8px; display: block; }
+.rule-head {
+font-family: ‘Syne’, sans-serif;
+font-size: 13px;
+font-weight: 700;
+margin-bottom: 6px;
+}
+
+.rule-body { font-size: 12.5px; color: var(–muted); line-height: 1.6; }
+
+@keyframes fadeIn {
+from { opacity: 0; transform: translateY(16px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 600px) {
+.stats-strip { grid-template-columns: repeat(2, 1fr); }
+.day-nav { grid-template-columns: repeat(4, 1fr); }
+.rules-grid { grid-template-columns: 1fr; }
+.masthead { grid-template-columns: 1fr; }
+.masthead-meta { text-align: left; }
+.day-macros { gap: 10px; }
+}
+</style>
+
+</head>
+<body>
+<div class="page">
+
+  <!-- Masthead -->
+
+  <div class="masthead">
+    <div>
+      <div class="masthead-label">▸ Real Deficit · Real Results</div>
+      <h1>7-DAY<br>LEAN PLAN</h1>
+    </div>
+    <div class="masthead-meta">
+      70 kg · 5 ft · 30 yrs<br>
+      Vegetarian + Eggs<br>
+      UK Supermarket Friendly<br>
+      Breakfast · Lunch · Dinner
+    </div>
+  </div>
+
+  <!-- Stats -->
+
+  <div class="stats-strip">
+    <div class="stat-cell"><div class="stat-n">1350</div><div class="stat-l">kcal / day</div></div>
+    <div class="stat-cell"><div class="stat-n">130g</div><div class="stat-l">protein / day</div></div>
+    <div class="stat-cell"><div class="stat-n">~500</div><div class="stat-l">kcal deficit</div></div>
+    <div class="stat-cell"><div class="stat-n">0.5kg</div><div class="stat-l">loss / week</div></div>
+  </div>
+
+  <!-- Why not losing weight -->
+
+  <div class="warning-box">
+    <h3>⚡ Why You Weren't Losing Weight</h3>
+    <p>At 5ft/152cm and 70kg your TDEE (maintenance) is roughly <strong>1,800–1,900 kcal</strong>. Your previous plan was ~1,500 kcal which is only a ~300–400 kcal deficit — too small, especially if you had any estimation errors in portions. This plan cuts to <strong>1,300–1,400 kcal</strong> creating a clean 500 kcal deficit. At that rate you should lose <strong>0.4–0.6 kg per week</strong>. Weigh yourself every Monday morning, same time, before eating. If no change after 2 weeks, drop 100 kcal more.</p>
+  </div>
+
+  <!-- Day Nav -->
+
+  <div class="day-nav">
+    <button class="day-btn active" onclick="show('d1',this)"><span class="day-short">Mon</span><span class="day-num">1</span></button>
+    <button class="day-btn" onclick="show('d2',this)"><span class="day-short">Tue</span><span class="day-num">2</span></button>
+    <button class="day-btn" onclick="show('d3',this)"><span class="day-short">Wed</span><span class="day-num">3</span></button>
+    <button class="day-btn" onclick="show('d4',this)"><span class="day-short">Thu</span><span class="day-num">4</span></button>
+    <button class="day-btn" onclick="show('d5',this)"><span class="day-short">Fri</span><span class="day-num">5</span></button>
+    <button class="day-btn" onclick="show('d6',this)"><span class="day-short">Sat</span><span class="day-num">6</span></button>
+    <button class="day-btn" onclick="show('d7',this)"><span class="day-short">Sun</span><span class="day-num">7</span></button>
+  </div>
+
+  <!-- ===== DAY 1 ===== -->
+
+  <div class="day-panel active" id="d1">
+    <div class="day-header">
+      <div class="day-title">Monday — Day 1</div>
+      <div class="day-macros">
+        <div class="macro"><span class="macro-val" style="color:var(--accent)">1340</span><span class="macro-lbl">kcal</span></div>
+        <div class="macro"><span class="macro-val" style="color:var(--green)">132g</span><span class="macro-lbl">protein</span></div>
+        <div class="macro"><span class="macro-val" style="color:var(--gold)">110g</span><span class="macro-lbl">carbs</span></div>
+        <div class="macro"><span class="macro-val" style="color:var(--blue)">28g</span><span class="macro-lbl">fats</span></div>
+      </div>
+    </div>
+
+```
+<div class="meal">
+  <div class="meal-top"><div class="meal-stripe breakfast"></div>
+  <div class="meal-body">
+    <div class="meal-row1">
+      <div><div class="meal-time">Breakfast · 8:00 AM</div><div class="meal-name">Scrambled Eggs + Greek Yogurt <span class="quick-tag">⚡ 10 min</span></div></div>
+      <div class="meal-pills"><span class="pill pill-p">42g protein</span><span class="pill pill-k">390 kcal</span></div>
+    </div>
+    <div class="ingredients-grid">
+      <div class="ingr">Whole eggs <em>2</em></div>
+      <div class="ingr">Low-fat Greek yogurt <em>200g</em></div>
+      <div class="ingr">Spinach <em>1 handful</em></div>
+      <div class="ingr">Wholemeal bread <em>1 slice</em></div>
+      <div class="ingr">Cherry tomatoes <em>5–6</em></div>
+    </div>
+    <div class="tip">Scramble eggs dry in non-stick, no butter. Greek yogurt on side — Fage 0% from Tesco/Sainsbury's is best. Spinach wilts in 60 seconds.</div>
+  </div></div>
+</div>
+
+<div class="meal">
+  <div class="meal-top"><div class="meal-stripe lunch"></div>
+  <div class="meal-body">
+    <div class="meal-row1">
+      <div><div class="meal-time">Lunch · 1:00 PM</div><div class="meal-name">Chickpea & Spinach Curry + Brown Rice</div></div>
+      <div class="meal-pills"><span class="pill pill-p">44g protein</span><span class="pill pill-k">490 kcal</span></div>
+    </div>
+    <div class="ingredients-grid">
+      <div class="ingr">Tinned chickpeas <em>400g tin</em></div>
+      <div class="ingr">Frozen spinach <em>100g</em></div>
+      <div class="ingr">Tinned tomatoes <em>½ tin</em></div>
+      <div class="ingr">Brown rice <em>60g dry</em></div>
+      <div class="ingr">Onion <em>1 small</em></div>
+      <div class="ingr">Garlic, ginger <em>2 cloves, 1 tsp</em></div>
+      <div class="ingr">Cumin, turmeric <em>1 tsp each</em></div>
+    </div>
+    <div class="tip">Tinned chickpeas from any UK supermarket, ~50p. Add low-fat yogurt dollop on top for extra protein. Cook rice separately, weigh dry.</div>
+  </div></div>
+</div>
+
+<div class="meal">
+  <div class="meal-top"><div class="meal-stripe dinner"></div>
+  <div class="meal-body">
+    <div class="meal-row1">
+      <div><div class="meal-time">Dinner · 7:00 PM</div><div class="meal-name">Masoor Dal + Roasted Veg <span class="quick-tag">⚡ 20 min</span></div></div>
+      <div class="meal-pills"><span class="pill pill-p">46g protein</span><span class="pill pill-k">460 kcal</span></div>
+    </div>
+    <div class="ingredients-grid">
+      <div class="ingr">Red lentils (masoor) <em>100g dry</em></div>
+      <div class="ingr">Courgette <em>1 medium</em></div>
+      <div class="ingr">Bell pepper <em>1</em></div>
+      <div class="ingr">Low-fat Greek yogurt <em>100g</em></div>
+      <div class="ingr">Cumin seeds <em>1 tsp</em></div>
+      <div class="ingr">Lemon <em>½</em></div>
+    </div>
+    <div class="tip">Red lentils are fastest cooking dal — 15 min no soaking. Roast veg in air fryer or oven at 200°C for 15 min. Zero oil needed.</div>
+  </div></div>
+</div>
+<div class="daily-note">🍵 Girnar Green Tea at 7:30 AM and pre-workout. No green tea after 6 PM. Drink 2.5L water today.</div>
+```
+
+  </div>
+
+  <!-- ===== DAY 2 ===== -->
+
+  <div class="day-panel" id="d2">
+    <div class="day-header">
+      <div class="day-title">Tuesday — Day 2</div>
+      <div class="day-macros">
+        <div class="macro"><span class="macro-val" style="color:var(--accent)">1360</span><span class="macro-lbl">kcal</span></div>
+        <div class="macro"><span class="macro-val" style="color:var(--green)">134g</span><span class="macro-lbl">protein</span></div>
+        <div class="macro"><span class="macro-val" style="color:var(--gold)">108g</span><span class="macro-lbl">carbs</span></div>
+        <div class="macro"><span class="macro-val" style="color:var(--blue)">30g</span><span class="macro-lbl">fats</span></div>
+      </div>
+    </div>
+
+```
+<div class="meal">
+  <div class="meal-top"><div class="meal-stripe breakfast"></div>
+  <div class="meal-body">
+    <div class="meal-row1">
+      <div><div class="meal-time">Breakfast · 8:00 AM</div><div class="meal-name">Oats + Protein Yogurt Bowl <span class="quick-tag">⚡ 5 min</span></div></div>
+      <div class="meal-pills"><span class="pill pill-p">38g protein</span><span class="pill pill-k">380 kcal</span></div>
+    </div>
+    <div class="ingredients-grid">
+      <div class="ingr">Rolled oats <em>50g dry</em></div>
+      <div class="ingr">Fage 0% Greek yogurt <em>150g</em></div>
+      <div class="ingr">Banana <em>½ small</em></div>
+      <div class="ingr">Chia seeds <em>1 tbsp</em></div>
+      <div class="ingr">Cinnamon <em>pinch</em></div>
+    </div>
+    <div class="tip">Make overnight oats the night before — mix oats + yogurt + chia in a jar, fridge overnight. Grab and go in morning. Cinnamon helps blood sugar control.</div>
+  </div></div>
+</div>
+
+<div class="meal">
+  <div class="meal-top"><div class="meal-stripe lunch"></div>
+  <div class="meal-body">
+    <div class="meal-row1">
+      <div><div class="meal-time">Lunch · 1:00 PM</div><div class="meal-name">Rajma (Kidney Bean) Bowl + Quinoa</div></div>
+      <div class="meal-pills"><span class="pill pill-p">48g protein</span><span class="pill pill-k">500 kcal</span></div>
+    </div>
+    <div class="ingredients-grid">
+      <div class="ingr">Tinned kidney beans <em>400g tin</em></div>
+      <div class="ingr">Quinoa <em>70g dry</em></div>
+      <div class="ingr">Tinned tomatoes <em>½ tin</em></div>
+      <div class="ingr">Onion <em>1 small</em></div>
+      <div class="ingr">Garam masala <em>1 tsp</em></div>
+      <div class="ingr">Coriander <em>handful</em></div>
+      <div class="ingr">Low-fat yogurt <em>50g</em></div>
+    </div>
+    <div class="tip">Tinned kidney beans at any UK supermarket ~60p. Quinoa from Tesco own-brand is cheapest. Rajma + quinoa = complete protein profile.</div>
+  </div></div>
+</div>
+
+<div class="meal">
+  <div class="meal-top"><div class="meal-stripe dinner"></div>
+  <div class="meal-body">
+    <div class="meal-row1">
+      <div><div class="meal-time">Dinner · 7:00 PM</div><div class="meal-name">Egg Fried Rice (healthy) <span class="quick-tag">⚡ 15 min</span></div></div>
+      <div class="meal-pills"><span class="pill pill-p">48g protein</span><span class="pill pill-k">480 kcal</span></div>
+    </div>
+    <div class="ingredients-grid">
+      <div class="ingr">Whole eggs <em>2</em></div>
+      <div class="ingr">Brown rice (cooked) <em>150g</em></div>
+      <div class="ingr">Frozen peas & corn <em>100g</em></div>
+      <div class="ingr">Low-fat Greek yogurt <em>100g</em></div>
+      <div class="ingr">Soy sauce (low sodium) <em>1 tbsp</em></div>
+      <div class="ingr">Garlic <em>2 cloves</em></div>
+      <div class="ingr">Spring onion <em>2</em></div>
+    </div>
+    <div class="tip">Use leftover brown rice from lunch — day-old rice fries better. Scramble eggs separately first, add to rice after. No oil — spray only.</div>
+  </div></div>
+</div>
+<div class="daily-note">💧 If hungry between meals drink 500ml water first and wait 15 min. Often it's thirst. Add a black coffee mid-afternoon — suppresses appetite.</div>
+```
+
+  </div>
+
+  <!-- ===== DAY 3 ===== -->
+
+  <div class="day-panel" id="d3">
+    <div class="day-header">
+      <div class="day-title">Wednesday — Day 3</div>
+      <div class="day-macros">
+        <div class="macro"><span class="macro-val" style="color:var(--accent)">1330</span><span class="macro-lbl">kcal</span></div>
+        <div class="macro"><span class="macro-val" style="color:var(--green)">128g</span><span class="macro-lbl">protein</span></div>
+        <div class="macro"><span class="macro-val" style="color:var(--gold)">112g</span><span class="macro-lbl">carbs</span></div>
+        <div class="macro"><span class="macro-val" style="color:var(--blue)">27g</span><span class="macro-lbl">fats</span></div>
+      </div>
+    </div>
+
+```
+<div class="meal">
+  <div class="meal-top"><div class="meal-stripe breakfast"></div>
+  <div class="meal-body">
+    <div class="meal-row1">
+      <div><div class="meal-time">Breakfast · 8:00 AM</div><div class="meal-name">Boiled Eggs + Cottage Cheese Toast <span class="quick-tag">⚡ 8 min</span></div></div>
+      <div class="meal-pills"><span class="pill pill-p">40g protein</span><span class="pill pill-k">370 kcal</span></div>
+    </div>
+    <div class="ingredients-grid">
+      <div class="ingr">Whole eggs <em>2 boiled</em></div>
+      <div class="ingr">Cottage cheese <em>150g</em></div>
+      <div class="ingr">Wholemeal bread <em>1 slice</em></div>
+      <div class="ingr">Cucumber slices <em>½</em></div>
+      <div class="ingr">Black pepper, chilli flakes <em>pinch</em></div>
+    </div>
+    <div class="tip">Cottage cheese (Tesco/ASDA own brand) is ~11g protein per 100g and very cheap. Spread on toast, top with chilli flakes. Boil eggs the night before for speed.</div>
+  </div></div>
+</div>
+
+<div class="meal">
+  <div class="meal-top"><div class="meal-stripe lunch"></div>
+  <div class="meal-body">
+    <div class="meal-row1">
+      <div><div class="meal-time">Lunch · 1:00 PM</div><div class="meal-name">Paneer Bhurji + 2 Chapati <span class="pill-q" style="background:rgba(200,75,47,0.1);color:var(--accent);border:1px solid rgba(200,75,47,0.2);padding:2px 7px;border-radius:3px;font-size:10px;margin-left:6px;">Paneer Day 1</span></div></div>
+      <div class="meal-pills"><span class="pill pill-p">45g protein</span><span class="pill pill-k">490 kcal</span></div>
+    </div>
+    <div class="ingredients-grid">
+      <div class="ingr">Low-fat paneer <em>150g</em></div>
+      <div class="ingr">Whole wheat chapati <em>2</em></div>
+      <div class="ingr">Onion, tomato <em>1 each</em></div>
+      <div class="ingr">Frozen spinach <em>50g</em></div>
+      <div class="ingr">Cumin, turmeric <em>½ tsp each</em></div>
+    </div>
+    <div class="tip">Crumble paneer into pan — no oil needed if non-stick. Add frozen spinach straight in. Paneer available at Tesco, Waitrose, ASDA. Go for low-fat/lite version.</div>
+  </div></div>
+</div>
+
+<div class="meal">
+  <div class="meal-top"><div class="meal-stripe dinner"></div>
+  <div class="meal-body">
+    <div class="meal-row1">
+      <div><div class="meal-time">Dinner · 7:00 PM</div><div class="meal-name">Greek Yogurt Daal Tadka + Brown Rice</div></div>
+      <div class="meal-pills"><span class="pill pill-p">43g protein</span><span class="pill pill-k">470 kcal</span></div>
+    </div>
+    <div class="ingredients-grid">
+      <div class="ingr">Yellow moong dal <em>90g dry</em></div>
+      <div class="ingr">Low-fat Greek yogurt <em>150g</em></div>
+      <div class="ingr">Brown rice <em>60g dry</em></div>
+      <div class="ingr">Mustard seeds <em>½ tsp</em></div>
+      <div class="ingr">Curry leaves <em>few</em></div>
+      <div class="ingr">Dried chilli <em>1</em></div>
+    </div>
+    <div class="tip">Stir yogurt into cooked dal off the heat — adds creaminess and protein without calories. Moong dal is easiest to digest, ideal for evenings.</div>
+  </div></div>
+</div>
+<div class="daily-note">🏋️ Workout day — have your Girnar green tea 30 min before gym. Eat dinner within 1 hour post-workout for muscle recovery.</div>
+```
+
+  </div>
+
+  <!-- ===== DAY 4 ===== -->
+
+  <div class="day-panel" id="d4">
+    <div class="day-header">
+      <div class="day-title">Thursday — Day 4</div>
+      <div class="day-macros">
+        <div class="macro"><span class="macro-val" style="color:var(--accent)">1350</span><span class="macro-lbl">kcal</span></div>
+        <div class="macro"><span class="macro-val" style="color:var(--green)">131g</span><span class="macro-lbl">protein</span></div>
+        <div class="macro"><span class="macro-val" style="color:var(--gold)">115g</span><span class="macro-lbl">carbs</span></div>
+        <div class="macro"><span class="macro-val" style="color:var(--blue)">29g</span><span class="macro-lbl">fats</span></div>
+      </div>
+    </div>
+
+```
+<div class="meal">
+  <div class="meal-top"><div class="meal-stripe breakfast"></div>
+  <div class="meal-body">
+    <div class="meal-row1">
+      <div><div class="meal-time">Breakfast · 8:00 AM</div><div class="meal-name">Egg Omelette + Yogurt <span class="quick-tag">⚡ 8 min</span></div></div>
+      <div class="meal-pills"><span class="pill pill-p">41g protein</span><span class="pill pill-k">380 kcal</span></div>
+    </div>
+    <div class="ingredients-grid">
+      <div class="ingr">Whole eggs <em>2</em></div>
+      <div class="ingr">Fage 0% Greek yogurt <em>200g</em></div>
+      <div class="ingr">Mushrooms <em>80g</em></div>
+      <div class="ingr">Baby spinach <em>handful</em></div>
+      <div class="ingr">Chilli flakes <em>pinch</em></div>
+    </div>
+    <div class="tip">Mushrooms from any supermarket ~£1. Sauté mushrooms first, pour beaten eggs over. Fold omelette, eat with yogurt on side. High volume, low calorie.</div>
+  </div></div>
+</div>
+
+<div class="meal">
+  <div class="meal-top"><div class="meal-stripe lunch"></div>
+  <div class="meal-body">
+    <div class="meal-row1">
+      <div><div class="meal-time">Lunch · 1:00 PM</div><div class="meal-name">Black Bean & Veggie Burrito Bowl</div></div>
+      <div class="meal-pills"><span class="pill pill-p">45g protein</span><span class="pill pill-k">490 kcal</span></div>
+    </div>
+    <div class="ingredients-grid">
+      <div class="ingr">Tinned black beans <em>400g tin</em></div>
+      <div class="ingr">Brown rice <em>70g dry</em></div>
+      <div class="ingr">Low-fat Greek yogurt <em>100g</em></div>
+      <div class="ingr">Sweetcorn <em>50g</em></div>
+      <div class="ingr">Avocado <em>¼</em></div>
+      <div class="ingr">Lime juice <em>½ lime</em></div>
+      <div class="ingr">Jalapeños <em>few slices</em></div>
+    </div>
+    <div class="tip">Use yogurt instead of sour cream — same texture, triple the protein. Assemble as a bowl. Black beans from ASDA/Tesco. Avocado adds healthy fats.</div>
+  </div></div>
+</div>
+
+<div class="meal">
+  <div class="meal-top"><div class="meal-stripe dinner"></div>
+  <div class="meal-body">
+    <div class="meal-row1">
+      <div><div class="meal-time">Dinner · 7:00 PM</div><div class="meal-name">Chana Dal Soup + Whole Wheat Roti <span class="quick-tag">⚡ 20 min</span></div></div>
+      <div class="meal-pills"><span class="pill pill-p">45g protein</span><span class="pill pill-k">480 kcal</span></div>
+    </div>
+    <div class="ingredients-grid">
+      <div class="ingr">Chana dal <em>100g dry</em></div>
+      <div class="ingr">Whole wheat roti <em>1</em></div>
+      <div class="ingr">Low-fat yogurt <em>100g</em></div>
+      <div class="ingr">Tomato <em>1 large</em></div>
+      <div class="ingr">Ginger, garlic <em>1 tsp each</em></div>
+      <div class="ingr">Cumin <em>1 tsp</em></div>
+    </div>
+    <div class="tip">Pressure cook or instant pot chana dal — 15 min. Make it thinner like soup consistency — higher water content = more fullness per calorie.</div>
+  </div></div>
+</div>
+<div class="daily-note">😴 Legs day today — hardest workout. Sleep is non-negotiable. Aim for 7.5 hrs. Growth hormone peaks at 11 PM — be asleep by then.</div>
+```
+
+  </div>
+
+  <!-- ===== DAY 5 ===== -->
+
+  <div class="day-panel" id="d5">
+    <div class="day-header">
+      <div class="day-title">Friday — Day 5</div>
+      <div class="day-macros">
+        <div class="macro"><span class="macro-val" style="color:var(--accent)">1370</span><span class="macro-lbl">kcal</span></div>
+        <div class="macro"><span class="macro-val" style="color:var(--green)">133g</span><span class="macro-lbl">protein</span></div>
+        <div class="macro"><span class="macro-val" style="color:var(--gold)">114g</span><span class="macro-lbl">carbs</span></div>
+        <div class="macro"><span class="macro-val" style="color:var(--blue)">28g</span><span class="macro-lbl">fats</span></div>
+      </div>
+    </div>
+
+```
+<div class="meal">
+  <div class="meal-top"><div class="meal-stripe breakfast"></div>
+  <div class="meal-body">
+    <div class="meal-row1">
+      <div><div class="meal-time">Breakfast · 8:00 AM</div><div class="meal-name">High-Protein Oat Pancakes <span class="quick-tag">⚡ 12 min</span></div></div>
+      <div class="meal-pills"><span class="pill pill-p">40g protein</span><span class="pill pill-k">390 kcal</span></div>
+    </div>
+    <div class="ingredients-grid">
+      <div class="ingr">Rolled oats <em>50g</em></div>
+      <div class="ingr">Whole eggs <em>2</em></div>
+      <div class="ingr">Low-fat Greek yogurt <em>100g</em></div>
+      <div class="ingr">Banana <em>½</em></div>
+      <div class="ingr">Baking powder <em>½ tsp</em></div>
+      <div class="ingr">Cinnamon <em>pinch</em></div>
+    </div>
+    <div class="tip">Blend all ingredients — oats, eggs, yogurt, banana into batter. Cook small pancakes in non-stick pan, no oil. Tastes like real pancakes. Top with berries if desired.</div>
+  </div></div>
+</div>
+
+<div class="meal">
+  <div class="meal-top"><div class="meal-stripe lunch"></div>
+  <div class="meal-body">
+    <div class="meal-row1">
+      <div><div class="meal-time">Lunch · 1:00 PM</div><div class="meal-name">Lentil & Vegetable Soup + Bread</div></div>
+      <div class="meal-pills"><span class="pill pill-p">46g protein</span><span class="pill pill-k">490 kcal</span></div>
+    </div>
+    <div class="ingredients-grid">
+      <div class="ingr">Red lentils <em>100g dry</em></div>
+      <div class="ingr">Carrot <em>2 medium</em></div>
+      <div class="ingr">Celery <em>2 stalks</em></div>
+      <div class="ingr">Low-fat Greek yogurt <em>100g</em></div>
+      <div class="ingr">Wholemeal bread <em>1 slice</em></div>
+      <div class="ingr">Vegetable stock <em>500ml</em></div>
+      <div class="ingr">Cumin, coriander <em>1 tsp each</em></div>
+    </div>
+    <div class="tip">Make a big batch — this soup stores 4 days in fridge. Celery and carrot are practically zero calorie. Stir yogurt in at the end for creaminess.</div>
+  </div></div>
+</div>
+
+<div class="meal">
+  <div class="meal-top"><div class="meal-stripe dinner"></div>
+  <div class="meal-body">
+    <div class="meal-row1">
+      <div><div class="meal-time">Dinner · 7:00 PM</div><div class="meal-name">Paneer Tikka + Quinoa Salad <span class="pill-q" style="background:rgba(200,75,47,0.1);color:var(--accent);border:1px solid rgba(200,75,47,0.2);padding:2px 7px;border-radius:3px;font-size:10px;margin-left:6px;">Paneer Day 2</span></div></div>
+      <div class="meal-pills"><span class="pill pill-p">47g protein</span><span class="pill pill-k">490 kcal</span></div>
+    </div>
+    <div class="ingredients-grid">
+      <div class="ingr">Low-fat paneer <em>150g</em></div>
+      <div class="ingr">Low-fat yogurt <em>100g</em></div>
+      <div class="ingr">Quinoa <em>70g dry</em></div>
+      <div class="ingr">Bell peppers <em>1</em></div>
+      <div class="ingr">Cucumber <em>½</em></div>
+      <div class="ingr">Lemon, mint <em>squeeze + leaves</em></div>
+      <div class="ingr">Tikka spice mix <em>1 tbsp</em></div>
+    </div>
+    <div class="tip">Marinate paneer cubes in yogurt + tikka spice for 30 min. Air-fry or grill at 200°C for 12 min. Serve over quinoa salad with chopped veg and lemon.</div>
+  </div></div>
+</div>
+<div class="daily-note">🎉 End of work week — don't reward yourself with food. Have a sparkling water with lemon instead of a drink. One cheat meal = 3 days of deficit gone.</div>
+```
+
+  </div>
+
+  <!-- ===== DAY 6 ===== -->
+
+  <div class="day-panel" id="d6">
+    <div class="day-header">
+      <div class="day-title">Saturday — Day 6 · Rest Day</div>
+      <div class="day-macros">
+        <div class="macro"><span class="macro-val" style="color:var(--accent)">1300</span><span class="macro-lbl">kcal</span></div>
+        <div class="macro"><span class="macro-val" style="color:var(--green)">128g</span><span class="macro-lbl">protein</span></div>
+        <div class="macro"><span class="macro-val" style="color:var(--gold)">100g</span><span class="macro-lbl">carbs</span></div>
+        <div class="macro"><span class="macro-val" style="color:var(--blue)">27g</span><span class="macro-lbl">fats</span></div>
+      </div>
+    </div>
+
+```
+<div class="meal">
+  <div class="meal-top"><div class="meal-stripe breakfast"></div>
+  <div class="meal-body">
+    <div class="meal-row1">
+      <div><div class="meal-time">Breakfast · 9:00 AM</div><div class="meal-name">Veggie Egg Scramble Bowl <span class="quick-tag">⚡ 10 min</span></div></div>
+      <div class="meal-pills"><span class="pill pill-p">39g protein</span><span class="pill pill-k">360 kcal</span></div>
+    </div>
+    <div class="ingredients-grid">
+      <div class="ingr">Whole eggs <em>2</em></div>
+      <div class="ingr">Fage 0% yogurt <em>150g</em></div>
+      <div class="ingr">Cherry tomatoes <em>100g</em></div>
+      <div class="ingr">Baby spinach <em>2 handfuls</em></div>
+      <div class="ingr">Mushrooms <em>80g</em></div>
+      <div class="ingr">Wholemeal bread <em>1 slice</em></div>
+    </div>
+    <div class="tip">Weekend breakfast, take your time. Sauté mushrooms and tomatoes, wilt spinach in, scramble eggs in. Proper cafe-style at home.</div>
+  </div></div>
+</div>
+
+<div class="meal">
+  <div class="meal-top"><div class="meal-stripe lunch"></div>
+  <div class="meal-body">
+    <div class="meal-row1">
+      <div><div class="meal-time">Lunch · 1:30 PM</div><div class="meal-name">Mixed Bean Chilli + Brown Rice</div></div>
+      <div class="meal-pills"><span class="pill pill-p">46g protein</span><span class="pill pill-k">480 kcal</span></div>
+    </div>
+    <div class="ingredients-grid">
+      <div class="ingr">Mixed bean tin <em>400g</em></div>
+      <div class="ingr">Tinned tomatoes <em>1 tin</em></div>
+      <div class="ingr">Brown rice <em>60g dry</em></div>
+      <div class="ingr">Low-fat yogurt <em>100g</em></div>
+      <div class="ingr">Chilli powder <em>1 tsp</em></div>
+      <div class="ingr">Cumin, smoked paprika <em>1 tsp each</em></div>
+      <div class="ingr">Garlic <em>3 cloves</em></div>
+    </div>
+    <div class="tip">Mixed bean tins (Tesco/ASDA ~60p) have chickpeas, kidney beans, borlotti — all high protein. This is a big batch meal — make double, freeze half for next week.</div>
+  </div></div>
+</div>
+
+<div class="meal">
+  <div class="meal-top"><div class="meal-stripe dinner"></div>
+  <div class="meal-body">
+    <div class="meal-row1">
+      <div><div class="meal-time">Dinner · 7:00 PM</div><div class="meal-name">Saag (Spinach) with Cottage Cheese + Roti</div></div>
+      <div class="meal-pills"><span class="pill pill-p">43g protein</span><span class="pill pill-k">460 kcal</span></div>
+    </div>
+    <div class="ingredients-grid">
+      <div class="ingr">Cottage cheese <em>200g</em></div>
+      <div class="ingr">Frozen spinach <em>200g</em></div>
+      <div class="ingr">Whole wheat roti <em>2</em></div>
+      <div class="ingr">Onion, garlic, ginger <em>1 each</em></div>
+      <div class="ingr">Garam masala <em>1 tsp</em></div>
+    </div>
+    <div class="tip">Cottage cheese is a great paneer substitute — similar texture, cheaper, higher protein per calorie. Blend half the spinach for smooth saag consistency.</div>
+  </div></div>
+</div>
+<div class="daily-note">🚶 Rest day — but not inactive. 30 min walk outside. UK parks are free. Walking after meals lowers blood sugar and burns ~150 extra kcal.</div>
+```
+
+  </div>
+
+  <!-- ===== DAY 7 ===== -->
+
+  <div class="day-panel" id="d7">
+    <div class="day-header">
+      <div class="day-title">Sunday — Day 7 · Reset</div>
+      <div class="day-macros">
+        <div class="macro"><span class="macro-val" style="color:var(--accent)">1380</span><span class="macro-lbl">kcal</span></div>
+        <div class="macro"><span class="macro-val" style="color:var(--green)">135g</span><span class="macro-lbl">protein</span></div>
+        <div class="macro"><span class="macro-val" style="color:var(--gold)">112g</span><span class="macro-lbl">carbs</span></div>
+        <div class="macro"><span class="macro-val" style="color:var(--blue)">30g</span><span class="macro-lbl">fats</span></div>
+      </div>
+    </div>
+
+```
+<div class="meal">
+  <div class="meal-top"><div class="meal-stripe breakfast"></div>
+  <div class="meal-body">
+    <div class="meal-row1">
+      <div><div class="meal-time">Breakfast · 9:00 AM</div><div class="meal-name">Masala Egg Bhurji + Toast <span class="quick-tag">⚡ 10 min</span></div></div>
+      <div class="meal-pills"><span class="pill pill-p">41g protein</span><span class="pill pill-k">385 kcal</span></div>
+    </div>
+    <div class="ingredients-grid">
+      <div class="ingr">Whole eggs <em>2</em></div>
+      <div class="ingr">Low-fat Greek yogurt <em>150g</em></div>
+      <div class="ingr">Onion <em>½ small</em></div>
+      <div class="ingr">Tomato <em>1 small</em></div>
+      <div class="ingr">Green chilli <em>1 small</em></div>
+      <div class="ingr">Wholemeal toast <em>1 slice</em></div>
+      <div class="ingr">Coriander <em>handful</em></div>
+    </div>
+    <div class="tip">Indian-style scrambled eggs — bhurji. Sauté onion + tomato first, add beaten eggs, scramble. Serve with yogurt on the side and toast. A proper Sunday breakfast.</div>
+  </div></div>
+</div>
+
+<div class="meal">
+  <div class="meal-top"><div class="meal-stripe lunch"></div>
+  <div class="meal-body">
+    <div class="meal-row1">
+      <div><div class="meal-time">Lunch · 1:30 PM</div><div class="meal-name">Dal Makhani (no butter) + Brown Rice</div></div>
+      <div class="meal-pills"><span class="pill pill-p">48g protein</span><span class="pill pill-k">510 kcal</span></div>
+    </div>
+    <div class="ingredients-grid">
+      <div class="ingr">Whole black lentils (urad) <em>80g dry</em></div>
+      <div class="ingr">Kidney beans <em>½ tin</em></div>
+      <div class="ingr">Low-fat Greek yogurt <em>150g</em></div>
+      <div class="ingr">Brown rice <em>70g dry</em></div>
+      <div class="ingr">Tinned tomatoes <em>½ tin</em></div>
+      <div class="ingr">Ginger, garlic paste <em>1 tbsp</em></div>
+      <div class="ingr">Garam masala <em>1 tsp</em></div>
+    </div>
+    <div class="tip">Replace cream/butter with Greek yogurt stirred in at the end — you won't notice the difference. Urad dal from any Indian grocery or Amazon. Slow cook = deeper flavour.</div>
+  </div></div>
+</div>
+
+<div class="meal">
+  <div class="meal-top"><div class="meal-stripe dinner"></div>
+  <div class="meal-body">
+    <div class="meal-row1">
+      <div><div class="meal-time">Dinner · 7:00 PM</div><div class="meal-name">Chickpea Salad + Yogurt Dressing <span class="quick-tag">⚡ 5 min</span></div></div>
+      <div class="meal-pills"><span class="pill pill-p">46g protein</span><span class="pill pill-k">485 kcal</span></div>
+    </div>
+    <div class="ingredients-grid">
+      <div class="ingr">Tinned chickpeas <em>400g tin</em></div>
+      <div class="ingr">Low-fat Greek yogurt <em>200g</em></div>
+      <div class="ingr">Cucumber <em>1</em></div>
+      <div class="ingr">Red onion <em>½</em></div>
+      <div class="ingr">Cherry tomatoes <em>100g</em></div>
+      <div class="ingr">Lemon, mint, cumin <em>dressing</em></div>
+      <div class="ingr">Wholemeal pitta <em>1</em></div>
+    </div>
+    <div class="tip">Sunday light dinner — no cooking required. Drain chickpeas, chop veg, mix yogurt + lemon + cumin + mint as dressing. Eat with 1 pitta. Light end to the week.</div>
+  </div></div>
+</div>
+<div class="daily-note">📋 Sunday prep — cook a big batch of brown rice, dal, and boil 4 eggs for Mon–Tue. Weigh yourself tomorrow morning (Monday) after waking, before eating. Track your progress.</div>
+```
+
+  </div>
+
+  <!-- RULES SECTION -->
+
+  <div class="rules-section">
+    <div class="rules-title">The Non-Negotiables</div>
+    <div class="rules-grid">
+      <div class="rule-card">
+        <span class="rule-icon">💧</span>
+        <div class="rule-head">2.5L Water Daily</div>
+        <div class="rule-body">Drink 500ml before each meal. Hunger and thirst feel identical — always try water first. Sparkling water helps with fullness.</div>
+      </div>
+      <div class="rule-card">
+        <span class="rule-icon">⚖️</span>
+        <div class="rule-head">Weigh Every Monday</div>
+        <div class="rule-body">Same time, same conditions — morning, post-toilet, before eating. Don't weigh daily. Weekly trend is what matters, not daily fluctuations.</div>
+      </div>
+      <div class="rule-card">
+        <span class="rule-icon">🛒</span>
+        <div class="rule-head">UK Supermarket Staples</div>
+        <div class="rule-body">Tinned chickpeas, kidney beans, black beans, red lentils, Fage 0% Greek yogurt, frozen spinach, cottage cheese — all available at Tesco, ASDA, Sainsbury's under £1 each.</div>
+      </div>
+      <div class="rule-card">
+        <span class="rule-icon">🍵</span>
+        <div class="rule-head">Girnar Green Tea Timing</div>
+        <div class="rule-body">7:30 AM empty stomach + 30 min pre-workout only. Never after 6 PM. Never within 1 hour of meals (blocks iron absorption from your lentils and beans).</div>
+      </div>
+      <div class="rule-card">
+        <span class="rule-icon">🧂</span>
+        <div class="rule-head">Portion Control is King</div>
+        <div class="rule-body">Weigh dry grains and lentils — not cooked. 60g dry rice ≠ 60g cooked rice. A kitchen scale from Amazon is £8 and is the single biggest tool for actual weight loss.</div>
+      </div>
+      <div class="rule-card">
+        <span class="rule-icon">😴</span>
+        <div class="rule-head">7.5 Hours Sleep</div>
+        <div class="rule-body">Poor sleep raises ghrelin (hunger hormone) by 24% the next day — you'll eat 300 kcal more without realising. Sleep is the free weight loss drug most people ignore.</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function show(id, btn) {
+    document.querySelectorAll('.day-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    btn.classList.add('active');
+  }
+</script>
+
+</body>
+</html>
